@@ -145,10 +145,10 @@ Default value: `false`
 MAC ONLY: Use a `app.nw` folder instead of `ZIP` file, this significantly improves the startup speed of applications on `mac`, since no decompressing is needed. Builds on other platforms will still use `ZIP` files.
 
 #### options.macPlist
-Type: `String`  
+Type: `String` or `Object`  
 Default value: `false`  
 
-MAC ONLY: if you supply a string to a Plist file it will use it. Otherwise it will generate something usefull from your package.json
+MAC ONLY: Pass a string containing the path to your own plist file. If a string isn't passed, a plist file will be generated from your package.json. Pass an object to overwrite or add properties to the generated plist file.
 
 #### options.winIco
 Type: `String`  
@@ -156,11 +156,76 @@ Default value: `null`
 
 WINDOWS ONLY: The path to your ICO icon file. If your don't provide your own it will use the one provided by node-webkit. If you are building on MAC or LINUX you must have [Wine](http://winehq.org) installed to use this option.
 
+### Manifest Options
+
+#### platformOverrides
+
+Allows you to specify platform-specific manifest values. Example manifest:
+
+```json
+{
+    "name": "nw-demo",
+    "version": "0.1.0",
+    "main": "index.html",
+    "window": {
+        "frame": false,
+        "toolbar": false
+    },
+    "platformOverrides": {
+        "win": {
+            "window": {
+                "frame": true
+            }
+        },
+        "osx": {
+            ...
+        },
+        "linux32": {
+            ...
+        },
+        "linux64": {
+            ...
+        },
+    }
+
+```
+
+The platform-specific options will override the others only when building that platform only and the `platformOverrides` property will be removed.
+
+For example, when building for Windows, the manifest generated and put into the end app (from the manifest above) would be:
+
+```json
+{
+    "name": "nw-demo",
+    "version": "0.1.0",
+    "main": "index.html",
+    "window": {
+        "frame": true,
+        "toolbar": false
+    }
+}
+```
+
+See [#85](https://github.com/mllrsohn/node-webkit-builder/issues/85) and [#94](https://github.com/mllrsohn/node-webkit-builder/pull/94) for more information. If you need this during development too, see [platform-overrides](http://github.com/adam-lynch/platform-overrides) and [gulp-platform-overrides](http://github.com/adam-lynch/gulp-platform-overrides). There is no Grunt plugin, [yet](https://github.com/new).
+
+## Troubleshooting
+
+### OSX ulimit
+
+Darwin (OS X kernel) has a low limit for file descriptors (256 per process) by default, so you might get an `EMFILE` error or an error mentioning "too many open files" if youtry to open more file descriptors than this.
+
+To get around it, run `ulimit -n 1024` (or add it to your `~/.bash_profile`). For more information, see [henvic/osx-ulimit](https://github.com/henvic/osx-ulimit).
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## To Do:
 - Test it on Linux and Windows
 
 ## Release History
+- 2014-11-14    `0.3.0` macPlist option improvements (see [#96](https://github.com/mllrsohn/node-webkit-builder/pull/96))
+- 2014-10-30    `0.2.0` adds support for platform-specific manifest overrides (see [#94](https://github.com/mllrsohn/node-webkit-builder/pull/94))
 - 2014-08-19    `0.1.2` adds a progress bar to downloads, fixes downloading through a proxy, fixed winIco, bug fixes
 - 2014-08-01    `0.1.0` use app filename for generated executables, optimized version checking, (known issue: `winIco` on windows)
 - 2014-07-31    `0.0.4` fixed compatibility with nodewebkit 0.10.0
@@ -171,10 +236,10 @@ WINDOWS ONLY: The path to your ICO icon file. If your don't provide your own it 
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
 
 [npm-url]: https://npmjs.org/package/node-webkit-builder
-[npm-image]: https://badge.fury.io/js/node-webkit-builder.png
+[npm-image]: http://img.shields.io/npm/v/node-webkit-builder.svg?style=flat
 
 [travis-url]: http://travis-ci.org/mllrsohn/node-webkit-builder
-[travis-image]: https://secure.travis-ci.org/mllrsohn/node-webkit-builder.png?branch=master
+[travis-image]: http://img.shields.io/travis/mllrsohn/node-webkit-builder/master.svg?style=flat
 
 [depstat-url]: https://david-dm.org/mllrsohn/node-webkit-builder
-[depstat-image]: https://david-dm.org/mllrsohn/node-webkit-builder.png
+[depstat-image]: https://david-dm.org/mllrsohn/node-webkit-builder.svg?style=flat
