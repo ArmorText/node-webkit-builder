@@ -5,7 +5,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
     <key>CFBundleDisplayName</key>
-    <string>My cool TestApp</string>
+    <string>TestApp</string>
     <key>CFBundleDocumentTypes</key>
     <array/>
     <key>CFBundleExecutable</key>
@@ -13,7 +13,7 @@
     <key>CFBundleIconFile</key>
     <string>nw.icns</string>
     <key>CFBundleIdentifier</key>
-    <string>com.intel.nw</string>
+    <string>com.node-webkit-builder.testapp</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
@@ -37,11 +37,6 @@
     <key>UTExportedTypeDeclarations</key>
     <array/>
     <key>NSHumanReadableCopyright</key>
-    <string>(c) by me</string>
-    <key>LSEnvironment</key>
-    <dict>
-      <key>PATH</key>
-      <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
-    </dict>
+    <false/>
   </dict>
 </plist>
