@@ -45,7 +45,8 @@ Or use the module:
 var NwBuilder = require('nw-builder');
 var nw = new NwBuilder({
     files: './path/to/nwfiles/**/**', // use the glob format
-    platforms: ['osx32', 'osx64', 'win32', 'win64']
+    platforms: ['osx32', 'osx64', 'win32', 'win64'],
+    version: '0.12.3'
 });
 
 //Log stuff you want
@@ -145,11 +146,11 @@ Default value: `false`
 
 MAC ONLY: The path to your ICNS icon file. If your don't provide your own it will use the one provided by NW.js
 
-#### options.macZip
-Type: `Boolean`  
-Default value: `false`  
+#### options.zip
+Type: `Boolean`
+Default value: `null`
 
-MAC ONLY: Use a `app.nw` folder instead of `ZIP` file, this significantly improves the startup speed of applications on `mac`, since no decompressing is needed. Builds on other platforms will still use `ZIP` files.
+WINDOW ONLY: Instead of zipping the application and merging it into the executable the application content is placed next to the application (which speed up the startup time for large apps). The default behaviour is platform specific. For `windows` and `linux`, the application is zipped and merged into the executable. For `mac`, the application is not zipped.
 
 #### options.macPlist
 Type: `String` or `Object`  
@@ -159,9 +160,15 @@ MAC ONLY: Pass a string containing the path to your own plist file. If a string 
 
 #### options.winIco
 Type: `String`  
-Default value: `null`  
+Default value: `null`
 
 WINDOWS ONLY: The path to your ICO icon file. If your don't provide your own it will use the one provided by NW.js. If you are building on MAC or LINUX you must have [Wine](https://www.winehq.org/) installed to use this option.
+
+#### options.macZip (DEPRECATED)
+Type: `Boolean`
+Default value: `null`
+
+MAC ONLY: Use a `app.nw` folder instead of `ZIP` file, this significantly improves the startup speed of applications on `mac`, since no decompressing is needed. Builds on other platforms will still use `ZIP` files. The default behaviour of node-webkit-builder is to not use `ZIP` files on the `mac` platform. In case of the `mac` platform the option `macZip` can override the option `zip`.
 
 ### Manifest Options
 
@@ -250,6 +257,7 @@ To get around it, run `ulimit -n 1024` (or add it to your `~/.bash_profile`). Fo
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Release History
+- 2015-12-18    `2.2.0` added `zip` option.
 - 2015-12-06    `2.1.0` added `cacheDir` command-line option, fix for no info being passed back, etc.
 - 2015-06-28    `2.0.2` put upper bound to semver check for windows.
 - 2015-06-14    `2.0.1` safer validation of versions.
